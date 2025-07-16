@@ -248,7 +248,7 @@ const Editor: React.FC = () => {
               </div>
 
               <button
-                onClick={handleExport}
+                onClick={() => navigate(`/preview/${currentProject.websiteUrl}`)}
                 className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-all text-sm font-semibold shadow-md"
               >
                 <Download className="w-4 h-4" />
