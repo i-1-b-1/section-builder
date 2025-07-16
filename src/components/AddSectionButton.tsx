@@ -11,12 +11,11 @@ interface AddSectionButtonProps {
   isVisible?: boolean;
 }
 
-const AddSectionButton: React.FC<AddSectionButtonProps> = ({ 
-  onAdd, 
-  position, 
-  theme, 
+const AddSectionButton: React.FC<AddSectionButtonProps> = ({
+  onAdd,
+  position,
   index,
-  isVisible = true 
+  isVisible = true
 }) => {
   if (!isVisible) return null;
 
@@ -24,14 +23,14 @@ const AddSectionButton: React.FC<AddSectionButtonProps> = ({
     <div className="relative group py-4">
       {/* Animated line */}
       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300">
-        <motion.div 
+        <motion.div
           className="w-full h-px bg-gradient-to-r from-transparent via-blue-400 to-transparent"
           initial={{ scaleX: 0 }}
           whileInView={{ scaleX: 1 }}
           transition={{ duration: 0.5 }}
         />
       </div>
-      
+
       {/* Add button */}
       <motion.button
         onClick={onAdd}

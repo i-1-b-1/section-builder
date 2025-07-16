@@ -66,7 +66,7 @@ const SectionRenderer: React.FC<SectionRendererProps> = ({
   const { updateSectionData, deleteSection, duplicateSection, getSectionTemplate } = useProject();
   const [showIconSelector, setShowIconSelector] = React.useState(false);
   const [iconField, setIconField] = React.useState<string>('');
-  
+
   const {
     attributes,
     listeners,
@@ -82,7 +82,7 @@ const SectionRenderer: React.FC<SectionRendererProps> = ({
   };
 
   const template = getSectionTemplate(section.templateId);
-  
+
   if (!template) {
     return (
       <div className="p-8 text-center bg-red-50 border border-red-200 rounded-lg m-4">
@@ -121,19 +121,19 @@ const SectionRenderer: React.FC<SectionRendererProps> = ({
 
   const handleIconSelect = (iconName: string) => {
     console.log('🔄 Icon selected:', { iconField, iconName });
-    
+
     if (iconField) {
       const updatedData = { ...section.data };
-      
+
       // Handle nested field paths like "services.0.icon" or "features.1.icon"
       const fieldParts = iconField.split('.');
-      
+
       if (fieldParts.length === 3) {
         // Handle array fields like services.0.icon or features.1.icon
         const arrayName = fieldParts[0]; // 'services' or 'features'
         const index = parseInt(fieldParts[1]); // array index
         const fieldName = fieldParts[2]; // 'icon'
-        
+
         if (updatedData[arrayName] && Array.isArray(updatedData[arrayName]) && updatedData[arrayName][index]) {
           updatedData[arrayName][index][fieldName] = iconName;
           console.log('✅ Updated nested array field:', { arrayName, index, fieldName, iconName });
@@ -143,11 +143,11 @@ const SectionRenderer: React.FC<SectionRendererProps> = ({
         updatedData[iconField] = iconName;
         console.log('✅ Updated simple field:', { iconField, iconName });
       }
-      
+
       handleContentChange(updatedData);
       console.log('📝 Section data updated:', updatedData);
     }
-    
+
     setShowIconSelector(false);
     setIconField('');
   };
@@ -230,9 +230,8 @@ const SectionRenderer: React.FC<SectionRendererProps> = ({
     <motion.div
       ref={setNodeRef}
       style={style}
-      className={`relative group transition-all duration-300 ${
-        isDragging ? 'opacity-50 scale-95 z-50' : ''
-      } ${isSelected ? 'ring-2 ring-blue-500 ring-offset-4 shadow-2xl' : ''}`}
+      className={`relative group transition-all duration-300 ${isDragging ? 'opacity-50 scale-95 z-50' : ''
+        } ${isSelected ? 'ring-2 ring-blue-500 ring-offset-4 shadow-2xl' : ''}`}
       onClick={onSelect}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -251,8 +250,8 @@ const SectionRenderer: React.FC<SectionRendererProps> = ({
         onDelete={handleDelete}
         onMoveUp={handleMoveUp}
         onMoveDown={handleMoveDown}
-        onAddAbove={onAddAbove || (() => {})}
-        onAddBelow={onAddBelow || (() => {})}
+        onAddAbove={onAddAbove || (() => { })}
+        onAddBelow={onAddBelow || (() => { })}
         dragHandleProps={{ ...attributes, ...listeners }}
       />
 
@@ -281,15 +280,14 @@ const SectionRenderer: React.FC<SectionRendererProps> = ({
       )}
 
       {/* Section Content */}
-      <div className={`${isSelected && !isEditing ? 'pointer-events-none' : ''} ${
-        isEditing ? 'ring-2 ring-blue-400 ring-offset-2' : ''
-      }`}>
+      <div className={`${isSelected && !isEditing ? 'pointer-events-none' : ''} ${isEditing ? 'ring-2 ring-blue-400 ring-offset-2' : ''
+        }`}>
         {renderSection()}
       </div>
 
       {/* Selection Overlay */}
       {isSelected && !isEditing && (
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           className="absolute inset-0 bg-blue-500/5 pointer-events-none rounded-lg"

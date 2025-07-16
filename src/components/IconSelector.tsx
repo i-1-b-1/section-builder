@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Search, Sparkles, Check, Zap, Star, Heart, Shield, Lock, Unlock, Key, Eye, EyeOff } from 'lucide-react';
+import { X, Search, Sparkles, Check } from 'lucide-react';
 import * as LucideIcons from 'lucide-react';
 
 interface IconSelectorProps {
@@ -70,13 +70,13 @@ const IconSelector: React.FC<IconSelectorProps> = ({ currentIcon, onSelect, onCl
   // Filter icons based on search and category
   const filteredIcons = useMemo(() => {
     let icons = selectedCategory === 'All' ? allIcons : iconCategories[selectedCategory] || [];
-    
+
     if (searchTerm) {
       icons = icons.filter(iconName =>
         iconName.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
-    
+
     return icons;
   }, [searchTerm, selectedCategory, allIcons]);
 
@@ -113,7 +113,7 @@ const IconSelector: React.FC<IconSelectorProps> = ({ currentIcon, onSelect, onCl
           <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 flex-shrink-0">
             <div className="flex items-center gap-4">
               {/* Live Preview */}
-              <motion.div 
+              <motion.div
                 className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg"
                 whileHover={{ scale: 1.05, rotate: 5 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -132,7 +132,7 @@ const IconSelector: React.FC<IconSelectorProps> = ({ currentIcon, onSelect, onCl
                   </motion.div>
                 </AnimatePresence>
               </motion.div>
-              
+
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 font-heading">Choose Icon</h2>
                 <p className="text-base text-gray-600 font-primary">
@@ -140,7 +140,7 @@ const IconSelector: React.FC<IconSelectorProps> = ({ currentIcon, onSelect, onCl
                 </p>
               </div>
             </div>
-            
+
             <button
               onClick={onClose}
               className="p-3 hover:bg-white/90 rounded-2xl transition-colors group"
@@ -176,11 +176,10 @@ const IconSelector: React.FC<IconSelectorProps> = ({ currentIcon, onSelect, onCl
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setSelectedCategory('All')}
-                className={`px-4 py-2 rounded-xl font-medium transition-all text-sm ${
-                  selectedCategory === 'All'
-                    ? 'bg-purple-600 text-white shadow-lg'
-                    : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
-                }`}
+                className={`px-4 py-2 rounded-xl font-medium transition-all text-sm ${selectedCategory === 'All'
+                  ? 'bg-purple-600 text-white shadow-lg'
+                  : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                  }`}
               >
                 All ({allIcons.length})
               </button>
@@ -188,11 +187,10 @@ const IconSelector: React.FC<IconSelectorProps> = ({ currentIcon, onSelect, onCl
                 <button
                   key={category}
                   onClick={() => setSelectedCategory(category)}
-                  className={`px-4 py-2 rounded-xl font-medium transition-all text-sm ${
-                    selectedCategory === category
-                      ? 'bg-purple-600 text-white shadow-lg'
-                      : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
-                  }`}
+                  className={`px-4 py-2 rounded-xl font-medium transition-all text-sm ${selectedCategory === category
+                    ? 'bg-purple-600 text-white shadow-lg'
+                    : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
+                    }`}
                 >
                   {category} ({icons.length})
                 </button>
@@ -222,7 +220,7 @@ const IconSelector: React.FC<IconSelectorProps> = ({ currentIcon, onSelect, onCl
                   {filteredIcons.map((iconName, index) => {
                     const IconComponent = getIconComponent(iconName);
                     const isSelected = selectedIcon === iconName;
-                    
+
                     return (
                       <motion.button
                         key={iconName}
@@ -232,15 +230,14 @@ const IconSelector: React.FC<IconSelectorProps> = ({ currentIcon, onSelect, onCl
                         transition={{ delay: index * 0.01, duration: 0.2 }}
                         whileHover={{ scale: 1.1, y: -2 }}
                         whileTap={{ scale: 0.95 }}
-                        className={`relative p-4 rounded-2xl transition-all duration-200 group ${
-                          isSelected 
-                            ? 'bg-purple-600 text-white shadow-lg ring-2 ring-purple-300 scale-110' 
-                            : 'bg-gray-50 hover:bg-blue-50 text-gray-700 hover:text-blue-600 hover:shadow-md'
-                        }`}
+                        className={`relative p-4 rounded-2xl transition-all duration-200 group ${isSelected
+                          ? 'bg-purple-600 text-white shadow-lg ring-2 ring-purple-300 scale-110'
+                          : 'bg-gray-50 hover:bg-blue-50 text-gray-700 hover:text-blue-600 hover:shadow-md'
+                          }`}
                         title={iconName}
                       >
                         <IconComponent className="w-6 h-6 mx-auto transition-transform duration-200" />
-                        
+
                         {/* Selection indicator */}
                         <AnimatePresence>
                           {isSelected && (
@@ -268,7 +265,7 @@ const IconSelector: React.FC<IconSelectorProps> = ({ currentIcon, onSelect, onCl
                           animate={{ scale: 0, opacity: 0 }}
                           whileTap={{ scale: 1.5, opacity: 0 }}
                           transition={{ duration: 0.3 }}
-                          style={{ 
+                          style={{
                             background: isSelected ? 'rgba(255,255,255,0.3)' : 'rgba(147, 51, 234, 0.3)'
                           }}
                         />
@@ -293,7 +290,7 @@ const IconSelector: React.FC<IconSelectorProps> = ({ currentIcon, onSelect, onCl
                 </span>
               )}
             </div>
-            
+
             <div className="flex items-center gap-3">
               <motion.button
                 onClick={onClose}
@@ -303,7 +300,7 @@ const IconSelector: React.FC<IconSelectorProps> = ({ currentIcon, onSelect, onCl
               >
                 Cancel
               </motion.button>
-              
+
               <motion.button
                 onClick={onClose}
                 whileHover={{ scale: 1.05 }}

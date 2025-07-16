@@ -28,10 +28,10 @@ interface HeaderProps {
   onCreateClick?: () => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ 
-  showSearch = false, 
+const Header: React.FC<HeaderProps> = ({
+  showSearch = false,
   showCreateButton = true,
-  onCreateClick 
+  onCreateClick
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -45,56 +45,56 @@ const Header: React.FC<HeaderProps> = ({
   const userSubscription = optimizedStorage.getUserSubscription();
 
   const navigationItems = [
-    { 
-      id: 'dashboard', 
-      label: 'Dashboard', 
-      path: '/dashboard', 
+    {
+      id: 'dashboard',
+      label: 'Dashboard',
+      path: '/dashboard',
       icon: Home,
       description: 'Your projects overview'
     },
-    { 
-      id: 'templates', 
-      label: 'Templates', 
-      path: '/templates', 
+    {
+      id: 'templates',
+      label: 'Templates',
+      path: '/templates',
       icon: Palette,
       description: 'Browse template gallery'
     },
-    { 
-      id: 'team', 
-      label: 'Team', 
-      path: '/team', 
+    {
+      id: 'team',
+      label: 'Team',
+      path: '/team',
       icon: Users,
       description: 'Collaborate with team',
       isPro: true
     },
-    { 
-      id: 'billing', 
-      label: 'Billing', 
-      path: '/billing', 
+    {
+      id: 'billing',
+      label: 'Billing',
+      path: '/billing',
       icon: CreditCard,
       description: 'Manage subscription'
     },
   ];
 
   const userMenuItems = [
-    { 
-      id: 'profile', 
-      label: 'Profile', 
-      path: '/profile', 
+    {
+      id: 'profile',
+      label: 'Profile',
+      path: '/profile',
       icon: User,
       description: 'Manage your account'
     },
-    { 
-      id: 'settings', 
-      label: 'Settings', 
-      path: '/settings', 
+    {
+      id: 'settings',
+      label: 'Settings',
+      path: '/settings',
       icon: Settings,
       description: 'App preferences'
     },
-    { 
-      id: 'billing', 
-      label: 'Billing', 
-      path: '/billing', 
+    {
+      id: 'billing',
+      label: 'Billing',
+      path: '/billing',
       icon: CreditCard,
       description: 'Subscription & payments'
     },
@@ -111,15 +111,15 @@ const Header: React.FC<HeaderProps> = ({
       pro: 'bg-gradient-to-r from-blue-500 to-blue-600 text-white',
       enterprise: 'bg-gradient-to-r from-purple-500 to-purple-600 text-white',
     };
-    
+
     const icons = {
       free: Sparkles,
       pro: Zap,
       enterprise: Crown,
     };
-    
+
     const IconComponent = icons[plan as keyof typeof icons];
-    
+
     return (
       <div className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${colors[plan as keyof typeof colors]}`}>
         <IconComponent className="w-3 h-3" />
@@ -141,13 +141,13 @@ const Header: React.FC<HeaderProps> = ({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo & Brand */}
-            <motion.div 
+            <motion.div
               className="flex items-center gap-3 cursor-pointer"
               onClick={() => navigate('/dashboard')}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <motion.div 
+              <motion.div
                 className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-r from-primary-500 to-accent-500 rounded-xl lg:rounded-2xl flex items-center justify-center shadow-medium"
                 whileHover={{ rotate: 5 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -169,22 +169,21 @@ const Header: React.FC<HeaderProps> = ({
               {navigationItems.map((item) => {
                 const IconComponent = item.icon;
                 const isActive = isActivePath(item.path);
-                
+
                 return (
                   <motion.button
                     key={item.id}
                     onClick={() => navigate(item.path)}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all group ${
-                      isActive
+                    className={`relative flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all group ${isActive
                         ? 'bg-primary-50 text-primary-700 shadow-soft'
                         : 'text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
-                    }`}
+                      }`}
                   >
                     <IconComponent className="w-4 h-4" />
                     <span className="font-primary">{item.label}</span>
-                    
+
                     {item.isPro && userSubscription?.plan === 'free' && (
                       <Crown className="w-3 h-3 text-warning-500" />
                     )}
@@ -438,7 +437,7 @@ const Header: React.FC<HeaderProps> = ({
                   {navigationItems.map((item) => {
                     const IconComponent = item.icon;
                     const isActive = isActivePath(item.path);
-                    
+
                     return (
                       <button
                         key={item.id}
@@ -446,11 +445,10 @@ const Header: React.FC<HeaderProps> = ({
                           navigate(item.path);
                           setShowMobileMenu(false);
                         }}
-                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all text-left ${
-                          isActive
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium transition-all text-left ${isActive
                             ? 'bg-primary-50 text-primary-700'
                             : 'text-secondary-600 hover:text-secondary-900 hover:bg-secondary-50'
-                        }`}
+                          }`}
                       >
                         <IconComponent className="w-5 h-5" />
                         <div className="flex-1">
@@ -510,7 +508,7 @@ const Header: React.FC<HeaderProps> = ({
                     {userMenuItems.map((item) => {
                       const IconComponent = item.icon;
                       return (
-                        
+
                         <button
                           key={item.id}
                           onClick={() => {
@@ -524,7 +522,7 @@ const Header: React.FC<HeaderProps> = ({
                         </button>
                       );
                     })}
-                    
+
                     <button
                       onClick={() => {
                         handleLogout();

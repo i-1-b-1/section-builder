@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  X, 
-  Search, 
-  Plus, 
-  Sparkles, 
-  Filter, 
-  Grid, 
-  List,
+import {
+  X,
+  Search,
+  Plus,
+  Sparkles,
+  Grid,
   Navigation,
   Rocket,
   Users,
@@ -21,9 +19,7 @@ import {
   Target,
   FileText,
   File,
-  ChevronRight,
-  Heart,
-  Layers
+  ChevronRight
 } from 'lucide-react';
 import { useProject } from '../contexts/ProjectContext';
 import { getAllCategories } from '../data/improvedSectionTemplates';
@@ -164,8 +160,8 @@ const SectionSelector: React.FC<SectionSelectorProps> = ({ onClose, onSelect, in
   const filteredSections = sectionTemplates.filter(template => {
     const matchesCategory = selectedCategory === 'all' || template.category === selectedCategory;
     const matchesSearch = template.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         template.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         template.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+      template.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      template.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
 
@@ -188,13 +184,13 @@ const SectionSelector: React.FC<SectionSelectorProps> = ({ onClose, onSelect, in
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.95, y: 20 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className="bg-white rounded-2xl w-full max-w-6xl h-[85vh] overflow-hidden shadow-2xl border border-gray-100 flex flex-col"
+          className="bg-white rounded-2xl w-full max-w-6xl h-[85vh] overflow-y-auto shadow-2xl border border-gray-100 flex flex-col"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-200 bg-gradient-to-r from-blue-50 via-purple-50 to-pink-50 flex-shrink-0">
             <div className="flex items-center gap-4">
-              <motion.div 
+              <motion.div
                 className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg"
                 whileHover={{ scale: 1.05, rotate: 5 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
@@ -203,13 +199,13 @@ const SectionSelector: React.FC<SectionSelectorProps> = ({ onClose, onSelect, in
               </motion.div>
               <div>
                 <h2 className="text-2xl font-bold text-gray-900 font-heading">
-                  {insertPosition 
+                  {insertPosition
                     ? `Add Section ${insertPosition.position === 'above' ? 'Above' : 'Below'} #${insertPosition.index + 1}`
                     : 'Add Section'
                   }
                 </h2>
                 <p className="text-base text-gray-600 font-primary">
-                  {insertPosition 
+                  {insertPosition
                     ? `Insert a new section ${insertPosition.position} the current position`
                     : 'Choose from beautiful, pre-built sections'
                   }
@@ -233,18 +229,17 @@ const SectionSelector: React.FC<SectionSelectorProps> = ({ onClose, onSelect, in
                 const colors = categoryColors[category.id] || categoryColors.headers;
                 const isSelected = selectedCategory === category.id;
                 const IconComponent = getIconComponent(category.icon);
-                
+
                 return (
                   <motion.button
                     key={category.id}
                     onClick={() => setSelectedCategory(category.id)}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all text-sm ${
-                      isSelected 
-                        ? `${colors.bg} ${colors.text} ${colors.border} border-2 shadow-md` 
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl font-medium transition-all text-sm ${isSelected
+                        ? `${colors.bg} ${colors.text} ${colors.border} border-2 shadow-md`
                         : 'bg-gray-100 text-gray-600 hover:bg-gray-200 border-2 border-transparent'
-                    }`}
+                      }`}
                   >
                     <IconComponent className="w-4 h-4" />
                     {category.name} ({category.count})
@@ -269,10 +264,10 @@ const SectionSelector: React.FC<SectionSelectorProps> = ({ onClose, onSelect, in
           </div>
 
           {/* Content - Scrollable */}
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1">
             <div className="p-6">
               {filteredSections.length === 0 ? (
-                <motion.div 
+                <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="text-center py-16"
@@ -290,37 +285,37 @@ const SectionSelector: React.FC<SectionSelectorProps> = ({ onClose, onSelect, in
                   {filteredSections.map((template, index) => {
                     const colors = categoryColors[template.category] || categoryColors.headers;
                     const IconComponent = getIconComponent(template.icon);
-                    
+
                     return (
                       <motion.div
                         key={template.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: index * 0.05 }}
-                        className={`group cursor-pointer bg-white rounded-3xl border-2 overflow-hidden hover:shadow-xl transition-all duration-300 ${colors.border} hover:border-opacity-50`}
+                        className={`group cursor-pointer bg-white rounded-3xl border-2 hover:shadow-xl transition-all duration-300 ${colors.border} hover:border-opacity-50`}
                         onClick={() => handleAddSection(template)}
                         whileHover={{ scale: 1.02, y: -2 }}
                         whileTap={{ scale: 0.98 }}
                       >
                         {/* Thumbnail */}
-                        <div className="relative h-40 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+                        <div className="relative h-40 bg-gradient-to-br from-gray-100 to-gray-200">
                           <img
                             src={template.thumbnail}
                             alt={template.name}
                             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                          
+
                           {/* Category Badge */}
                           <div className={`absolute top-3 left-3 px-2 py-1 rounded-lg text-xs font-medium ${colors.bg} ${colors.text} border ${colors.border} font-primary`}>
                             {template.category}
                           </div>
-                          
+
                           {/* Add Button */}
                           <div className="absolute top-3 right-3 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-lg">
                             <Plus className="w-5 h-5 text-gray-700" />
                           </div>
-                          
+
                           {/* Icon */}
                           <div className="absolute bottom-3 left-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-lg flex items-center justify-center">
                             <IconComponent className="w-4 h-4 text-gray-700" />
@@ -333,7 +328,7 @@ const SectionSelector: React.FC<SectionSelectorProps> = ({ onClose, onSelect, in
                             {template.name}
                           </h3>
                           <p className="text-gray-600 text-base line-clamp-2 mb-4 font-primary">{template.description}</p>
-                          
+
                           {/* Tags */}
                           <div className="flex flex-wrap gap-1 mb-4">
                             {template.tags.slice(0, 3).map((tag) => (

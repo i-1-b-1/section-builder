@@ -59,11 +59,10 @@ const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
                 <button
                   key={tab.id}
                   onClick={() => setActiveTab(tab.id as 'colors' | 'fonts')}
-                  className={`flex-1 flex items-center justify-center gap-2 px-6 py-4 font-medium transition-colors ${
-                    activeTab === tab.id
-                      ? 'text-purple-600 border-b-2 border-purple-600 bg-purple-50'
-                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
-                  }`}
+                  className={`flex-1 flex items-center justify-center gap-2 px-6 py-4 font-medium transition-colors ${activeTab === tab.id
+                    ? 'text-purple-600 border-b-2 border-purple-600 bg-purple-50'
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                    }`}
                 >
                   <Icon className="w-4 h-4" />
                   {tab.label}
@@ -90,17 +89,16 @@ const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
                         key={theme.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className={`relative p-4 border-2 rounded-2xl cursor-pointer transition-all hover:shadow-lg ${
-                          currentTheme.id === theme.id
-                            ? 'border-purple-500 bg-purple-50 shadow-lg'
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
+                        className={`relative p-4 border-2 rounded-2xl cursor-pointer transition-all hover:shadow-lg ${currentTheme.id === theme.id
+                          ? 'border-purple-500 bg-purple-50 shadow-lg'
+                          : 'border-gray-200 hover:border-gray-300'
+                          }`}
                         onClick={() => updateTheme(theme.id)}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                       >
                         {currentTheme.id === theme.id && (
-                          <motion.div 
+                          <motion.div
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             className="absolute top-2 right-2 w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center"
@@ -108,9 +106,9 @@ const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
                             <Check className="w-3 h-3 text-white" />
                           </motion.div>
                         )}
-                        
+
                         <h4 className="font-semibold text-gray-900 mb-3">{theme.name}</h4>
-                        
+
                         {/* Color Preview */}
                         <div className="flex gap-2 mb-4">
                           <div
@@ -134,7 +132,7 @@ const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
                             title="Surface"
                           ></div>
                         </div>
-                        
+
                         {/* Sample Text */}
                         <div className="space-y-1">
                           <div
@@ -184,17 +182,16 @@ const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
                         key={fontCollection.id}
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className={`relative p-6 border-2 rounded-2xl cursor-pointer transition-all hover:shadow-lg ${
-                          currentTheme.fonts.primary === fontCollection.fonts.primary
-                            ? 'border-purple-500 bg-purple-50 shadow-lg'
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
+                        className={`relative p-6 border-2 rounded-2xl cursor-pointer transition-all hover:shadow-lg ${currentTheme.fonts.primary === fontCollection.fonts.primary
+                          ? 'border-purple-500 bg-purple-50 shadow-lg'
+                          : 'border-gray-200 hover:border-gray-300'
+                          }`}
                         onClick={() => updateFonts(fontCollection.id)}
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.99 }}
                       >
                         {currentTheme.fonts.primary === fontCollection.fonts.primary && (
-                          <motion.div 
+                          <motion.div
                             initial={{ scale: 0 }}
                             animate={{ scale: 1 }}
                             className="absolute top-3 right-3 w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center"
@@ -202,12 +199,12 @@ const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
                             <Check className="w-3 h-3 text-white" />
                           </motion.div>
                         )}
-                        
+
                         <div className="mb-4">
                           <h4 className="font-semibold text-gray-900 text-lg mb-1">{fontCollection.name}</h4>
                           <p className="text-sm text-gray-600">{fontCollection.description}</p>
                         </div>
-                        
+
                         {/* Font Preview */}
                         <div className="space-y-3">
                           <div style={{ fontFamily: fontCollection.fonts.primary }}>
@@ -217,7 +214,7 @@ const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
                             </div>
                             <div className="text-xl font-bold text-gray-900">The quick brown fox</div>
                           </div>
-                          
+
                           <div style={{ fontFamily: fontCollection.fonts.secondary }}>
                             <div className="flex items-center gap-2 mb-1">
                               <span className="text-xs font-medium text-blue-600 bg-blue-100 px-2 py-1 rounded">SECONDARY</span>
@@ -225,7 +222,7 @@ const ThemeCustomizer: React.FC<ThemeCustomizerProps> = ({ onClose }) => {
                             </div>
                             <div className="text-base text-gray-700">jumps over the lazy dog</div>
                           </div>
-                          
+
                           <div style={{ fontFamily: fontCollection.fonts.accent }}>
                             <div className="flex items-center gap-2 mb-1">
                               <span className="text-xs font-medium text-green-600 bg-green-100 px-2 py-1 rounded">ACCENT</span>

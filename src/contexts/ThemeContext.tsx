@@ -368,7 +368,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   // Apply CSS variables to root for WEBSITE theme only
   useEffect(() => {
     const root = document.documentElement;
-    
+
     // Apply website colors (these change with theme)
     Object.entries(currentTheme.colors).forEach(([key, value]) => {
       const cssVar = key.replace(/([A-Z])/g, '-$1').toLowerCase();
@@ -387,8 +387,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     // Load Google Fonts
     const fontFamilies = Object.values(currentTheme.fonts);
-    const fontString = fontFamilies.map(font => font.replace(' ', '+')).join('|');
-    
+
     // Remove existing font link
     const existingLink = document.querySelector('link[data-website-fonts]');
     if (existingLink) {
@@ -397,7 +396,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
     // Add new font link
     const link = document.createElement('link');
-    link.href = `https://fonts.googleapis.com/css2?${fontFamilies.map(font => 
+    link.href = `https://fonts.googleapis.com/css2?${fontFamilies.map(font =>
       `family=${font.replace(' ', '+')}:wght@300;400;500;600;700;800;900`
     ).join('&')}&display=swap`;
     link.rel = 'stylesheet';
@@ -476,6 +475,7 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => {
   const context = useContext(ThemeContext);
   if (!context) {

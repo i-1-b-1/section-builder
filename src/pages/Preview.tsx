@@ -5,13 +5,8 @@ import {
   ArrowLeft,
   Edit3,
   Share2,
-  ExternalLink,
   Globe,
-  Smartphone,
-  Monitor,
   Eye,
-  Settings,
-  Download,
   Layout
 } from 'lucide-react';
 import { useProject } from '../contexts/ProjectContext';
@@ -19,23 +14,22 @@ import { useTheme } from '../contexts/ThemeContext';
 import SectionRenderer from '../components/SectionRenderer';
 
 const Preview: React.FC = () => {
-  const { id: urlParam } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { projects, currentProject, setCurrentProject, createProject } = useProject();
+  const { projects, currentProject, setCurrentProject } = useProject();
   const { currentTheme } = useTheme();
   const [showHeader, setShowHeader] = useState(true);
 
   useEffect(() => {
-    if (urlParam) {
-      const project = projects.find(p => p.websiteUrl === urlParam);
+    if (id) {
+      const project = projects.find(p => p.id === id);
       if (project) {
         setCurrentProject(project);
       } else {
-        // Don't redirect immediately, show a loading state or project not found message
-        console.log('Project not found for preview:', urlParam);
+        console.log('Project not found for preview:', id);
       }
     }
-  }, [urlParam, projects, setCurrentProject, navigate]);
+  }, [id, projects, setCurrentProject, navigate]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -64,11 +58,9 @@ const Preview: React.FC = () => {
   };
 
   if (!currentProject) {
-    // Check if we're still loading or if project doesn't exist
-    const projectExists = urlParam && projects.some(p => p.websiteUrl === urlParam);
-    
-    if (urlParam && !projectExists) {
-      // Project doesn't exist, show not found message
+    const projectExists = id && projects.some(p => p.id === id);
+
+    if (id && !projectExists) {
       return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center max-w-md">
@@ -77,7 +69,7 @@ const Preview: React.FC = () => {
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Website Not Found</h2>
             <p className="text-gray-600 mb-6">
-              The website "{urlParam}" doesn't exist or hasn't been published yet.
+              The website with ID "{id}" doesn't exist.
             </p>
             <div className="flex gap-3 justify-center">
               <button
@@ -87,7 +79,7 @@ const Preview: React.FC = () => {
                 Go to Dashboard
               </button>
               <button
-                onClick={() => navigate(`/editor/${urlParam}`)}
+                onClick={() => navigate(`/editor/${id}`)}
                 className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
                 Create Website
@@ -97,7 +89,7 @@ const Preview: React.FC = () => {
         </div>
       );
     }
-    
+
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -120,7 +112,7 @@ const Preview: React.FC = () => {
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center gap-4">
             <button
-              onClick={() => navigate(`/editor/${currentProject.websiteUrl}`)}
+              onClick={() => navigate(`/editor/${currentProject.id}`)}
               className="p-2 hover:bg-gray-100 rounded-lg transition-colors group"
             >
               <ArrowLeft className="w-5 h-5 text-secondary-600 group-hover:text-secondary-800" />
@@ -139,7 +131,7 @@ const Preview: React.FC = () => {
 
           <div className="flex items-center gap-3">
             <button
-              onClick={() => navigate(`/editor/${currentProject.websiteUrl}`)}
+              onClick={() => navigate(`/editor/${currentProject.id}`)}
               className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium font-primary"
             >
               <Edit3 className="w-4 h-4" />
@@ -174,19 +166,19 @@ const Preview: React.FC = () => {
                 <div className="w-24 h-24 bg-gray-200 rounded-3xl flex items-center justify-center mx-auto">
                   <Globe className="w-12 h-12 text-gray-400" />
                 </div>
-               <div className="absolute -top-2 -right-2 w-8 h-8 bg-primary-400 rounded-full flex items-center justify-center animate-bounce">
-                 <Layout className="w-4 h-4 text-white" />
+                <div className="absolute -top-2 -right-2 w-8 h-8 bg-primary-400 rounded-full flex items-center justify-center animate-bounce">
+                  <Layout className="w-4 h-4 text-white" />
                 </div>
               </div>
-             <h2 className="text-3xl font-bold text-secondary-900 mb-4 font-heading">
+              <h2 className="text-3xl font-bold text-secondary-900 mb-4 font-heading">
                 Your website is empty
               </h2>
-             <p className="text-secondary-600 mb-8 text-lg font-primary">
+              <p className="text-secondary-600 mb-8 text-lg font-primary">
                 Add some sections to see your website come to life
               </p>
               <button
-                onClick={() => navigate(`/editor/${currentProject.websiteUrl}`)}
-               className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl hover:opacity-90 transition-all font-semibold shadow-lg text-lg font-heading"
+                onClick={() => navigate(`/editor/${currentProject.id}`)}
+                className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-xl hover:opacity-90 transition-all font-semibold shadow-lg text-lg font-heading"
               >
                 Start Building
               </button>
@@ -217,7 +209,7 @@ const Preview: React.FC = () => {
           animate={{ opacity: 1, scale: 1 }}
           className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl px-6 py-3 text-white flex items-center gap-3 shadow-lg"
         >
-          <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+          <div className="w-3 h-3 bg-green-400 rounded-full border-2 border-white animate-pulse"></div>
           <span className="font-medium font-primary">Preview Mode Active</span>
         </motion.div>
       </div>

@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
-import { DndContext, DragEndEvent, closestCenter } from '@dnd-kit/core';
+import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import {
   ArrowLeft,
   Plus,
-  Settings,
   Eye,
   Download,
   Save,
@@ -27,7 +26,7 @@ import { generateCompleteHTML } from '../utils/htmlExporter';
 import AddSectionButton from '../components/AddSectionButton';
 
 const Editor: React.FC = () => {
-  const { id: urlParam } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const { projects, currentProject, setCurrentProject, reorderSections, createProject, isLoading } = useProject();
   const { currentTheme } = useTheme();
@@ -40,16 +39,15 @@ const Editor: React.FC = () => {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
-    if (urlParam) {
-      const project = projects.find(p => p.websiteUrl === urlParam);
+    if (id) {
+      const project = projects.find(p => p.id === id);
       if (project) {
         setCurrentProject(project);
       } else {
-        // Don't redirect immediately, show a loading state or create project option
-        console.log('Project not found:', urlParam);
+        console.log('Project not found:', id);
       }
     }
-  }, [urlParam, projects, setCurrentProject, navigate]);
+  }, [id, projects, setCurrentProject, navigate]);
 
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
@@ -80,7 +78,6 @@ const Editor: React.FC = () => {
 
   const handleSave = async () => {
     setIsSaving(true);
-    // Simulate save
     setTimeout(() => {
       setIsSaving(false);
       setEditingSection(null);
@@ -98,10 +95,7 @@ const Editor: React.FC = () => {
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-
-      // Show success message
       alert('Website exported successfully! The HTML file has been downloaded.');
-
       setTimeout(() => {
         URL.revokeObjectURL(url);
       }, 100);
@@ -120,49 +114,48 @@ const Editor: React.FC = () => {
 
   const moveSectionUp = (sectionId: string) => {
     if (!currentProject) return;
-    
+
     const sections = [...currentProject.sections].sort((a, b) => a.order - b.order);
     const currentIndex = sections.findIndex(s => s.id === sectionId);
-    
+
     if (currentIndex > 0) {
       const updatedSections = [...sections];
-      [updatedSections[currentIndex - 1], updatedSections[currentIndex]] = 
-      [updatedSections[currentIndex], updatedSections[currentIndex - 1]];
-      
+      [updatedSections[currentIndex - 1], updatedSections[currentIndex]] =
+        [updatedSections[currentIndex], updatedSections[currentIndex - 1]];
+
       const reorderedSections = updatedSections.map((section, index) => ({
         ...section,
         order: index
       }));
-      
+
       reorderSections(reorderedSections);
     }
   };
 
   const moveSectionDown = (sectionId: string) => {
     if (!currentProject) return;
-    
+
     const sections = [...currentProject.sections].sort((a, b) => a.order - b.order);
     const currentIndex = sections.findIndex(s => s.id === sectionId);
-    
+
     if (currentIndex < sections.length - 1) {
       const updatedSections = [...sections];
-      [updatedSections[currentIndex], updatedSections[currentIndex + 1]] = 
-      [updatedSections[currentIndex + 1], updatedSections[currentIndex]];
-      
+      [updatedSections[currentIndex], updatedSections[currentIndex + 1]] =
+        [updatedSections[currentIndex + 1], updatedSections[currentIndex]];
+
       const reorderedSections = updatedSections.map((section, index) => ({
         ...section,
         order: index
       }));
-      
+
       reorderSections(reorderedSections);
     }
   };
+
   if (!currentProject) {
-    // Check if we're still loading or if project doesn't exist
-    const projectExists = urlParam && projects.some(p => p.websiteUrl === urlParam || p.id === urlParam);
-    
-    if (urlParam && !projectExists && !isLoading) {
-      // Project doesn't exist, show create option
+    const projectExists = id && projects.some(p => p.id === id);
+
+    if (id && !projectExists && !isLoading) {
       return (
         <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center max-w-md">
@@ -171,7 +164,7 @@ const Editor: React.FC = () => {
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-4">Project Not Found</h2>
             <p className="text-gray-600 mb-6">
-              The project "{urlParam}" doesn't exist or you don't have access to it.
+              The project with ID "{id}" doesn't exist.
             </p>
             <div className="flex gap-3">
               <button
@@ -180,13 +173,12 @@ const Editor: React.FC = () => {
               >
                 Go to Dashboard
               </button>
-                            <button
+              <button
                 onClick={() => {
-                  // Create a new project with this URL
                   const project = createProject(
-                    urlParam.charAt(0).toUpperCase() + urlParam.slice(1).replace(/-/g, ' '),
+                    `New Project ${projects.length + 1}`,
                     undefined,
-                    urlParam
+                    id
                   );
                   setCurrentProject(project);
                 }}
@@ -199,7 +191,7 @@ const Editor: React.FC = () => {
         </div>
       );
     }
-    
+
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
@@ -247,7 +239,6 @@ const Editor: React.FC = () => {
               exit={{ opacity: 0, height: 0 }}
               className="mt-4 space-y-4"
             >
-              {/* Action Buttons */}
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={() => handleAddSection()}
@@ -293,7 +284,7 @@ const Editor: React.FC = () => {
               </div>
 
               <button
-                onClick={() => navigate(`/preview/${currentProject.websiteUrl}`)}
+                onClick={handleExport}
                 className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-orange-600 text-white rounded-xl hover:bg-orange-700 transition-all text-sm font-semibold shadow-md"
               >
                 <Download className="w-4 h-4" />

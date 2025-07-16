@@ -160,6 +160,9 @@ export interface UsageMetrics {
 
 // Enhanced Storage Manager with optimal structure
 export class OptimizedStorageManager {
+  clearAll() {
+    throw new Error('Method not implemented.');
+  }
   private static instance: OptimizedStorageManager;
   private readonly STORAGE_PREFIX = 'templates_uz_';
   private readonly STORAGE_KEYS = {

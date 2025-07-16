@@ -4,35 +4,23 @@ import { useNavigate } from 'react-router-dom';
 import {
   Plus,
   Search,
-  Filter,
   MoreVertical,
   Eye,
   Edit,
   Trash2,
   Copy,
-  Download,
   Globe,
-  Calendar,
   Layers,
-  Zap,
-  Star,
   Clock,
-  Users,
-  TrendingUp,
   Sparkles,
-  Heart,
   Bookmark,
   Layout,
-  Palette,
-  Settings,
   BarChart3,
   Smartphone,
-  Monitor,
   X,
   Link as LinkIcon,
   Upload,
   Image as ImageIcon,
-  Tag,
   Building,
   User,
   Briefcase,
@@ -273,7 +261,7 @@ const Dashboard: React.FC = () => {
 
       // Navigate to editor only after successful creation
       setTimeout(() => {
-        navigate(`/editor/${project.websiteUrl}`);
+        navigate(`/editor/${project.id}`);
       }, 100);
 
     } catch (error) {
@@ -657,7 +645,7 @@ const Dashboard: React.FC = () => {
                             >
                               <button
                                 onClick={() => {
-                                  navigate(`/preview/${project.websiteUrl}`);
+                                  navigate(`/preview/${project.id}`);
                                   setSelectedProject(null);
                                 }}
                                 className="w-full px-4 py-3 text-left text-sm text-secondary-700 hover:bg-secondary-50 flex items-center gap-3 transition-colors font-primary"
@@ -729,7 +717,7 @@ const Dashboard: React.FC = () => {
 
                     <div className="flex gap-2 sm:gap-3">
                       <motion.button
-                        onClick={() => navigate(`/editor/${project.websiteUrl}`)}
+                        onClick={() => navigate(`/editor/${project.id}`)}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         className="flex-1 inline-flex items-center justify-center gap-2 px-3 py-2.5 sm:px-4 sm:py-3 bg-gradient-to-r from-primary-500 to-accent-500 text-white rounded-xl hover:shadow-glow transition-all duration-200 font-semibold text-sm shadow-medium font-heading"
@@ -738,7 +726,7 @@ const Dashboard: React.FC = () => {
                         Edit
                       </motion.button>
                       <motion.button
-                        onClick={() => navigate(`/preview/${project.websiteUrl}`)}
+                        onClick={() => navigate(`/preview/${project.id}`)}
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         className="px-3 py-2.5 sm:px-4 sm:py-3 bg-secondary-100 text-secondary-700 rounded-xl hover:bg-secondary-200 transition-colors font-semibold text-sm font-primary"

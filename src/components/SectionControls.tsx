@@ -10,7 +10,6 @@ import {
   Plus,
   Eye,
   EyeOff,
-  Settings,
   File,
   Layout,
   Type,
@@ -121,7 +120,6 @@ interface SectionControlsProps {
 }
 
 const SectionControls: React.FC<SectionControlsProps> = ({
-  section,
   template,
   isSelected,
   isEditing,
