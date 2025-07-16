@@ -21,7 +21,7 @@ import SectionRenderer from '../components/SectionRenderer';
 const Preview: React.FC = () => {
   const { id: urlParam } = useParams();
   const navigate = useNavigate();
-  const { projects, currentProject, setCurrentProject } = useProject();
+  const { projects, currentProject, setCurrentProject, createProject } = useProject();
   const { currentTheme } = useTheme();
   const [showHeader, setShowHeader] = useState(true);
 
@@ -31,7 +31,8 @@ const Preview: React.FC = () => {
       if (project) {
         setCurrentProject(project);
       } else {
-        navigate('/dashboard');
+        // Don't redirect immediately, show a loading state or project not found message
+        console.log('Project not found for preview:', urlParam);
       }
     }
   }, [urlParam, projects, setCurrentProject, navigate]);
@@ -63,6 +64,40 @@ const Preview: React.FC = () => {
   };
 
   if (!currentProject) {
+    // Check if we're still loading or if project doesn't exist
+    const projectExists = urlParam && projects.some(p => p.websiteUrl === urlParam);
+    
+    if (urlParam && !projectExists) {
+      // Project doesn't exist, show not found message
+      return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center max-w-md">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Globe className="w-8 h-8 text-red-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Website Not Found</h2>
+            <p className="text-gray-600 mb-6">
+              The website "{urlParam}" doesn't exist or hasn't been published yet.
+            </p>
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={() => navigate('/dashboard')}
+                className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                Go to Dashboard
+              </button>
+              <button
+                onClick={() => navigate(`/editor/${urlParam}`)}
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Create Website
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">

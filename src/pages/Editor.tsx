@@ -29,7 +29,7 @@ import AddSectionButton from '../components/AddSectionButton';
 const Editor: React.FC = () => {
   const { id: urlParam } = useParams();
   const navigate = useNavigate();
-  const { projects, currentProject, setCurrentProject, reorderSections } = useProject();
+  const { projects, currentProject, setCurrentProject, reorderSections, createProject, isLoading } = useProject();
   const { currentTheme } = useTheme();
   const [showSectionSelector, setShowSectionSelector] = useState(false);
   const [insertPosition, setInsertPosition] = useState<{ index: number; position: 'above' | 'below' } | null>(null);
@@ -45,7 +45,8 @@ const Editor: React.FC = () => {
       if (project) {
         setCurrentProject(project);
       } else {
-        navigate('/dashboard');
+        // Don't redirect immediately, show a loading state or create project option
+        console.log('Project not found:', urlParam);
       }
     }
   }, [urlParam, projects, setCurrentProject, navigate]);
@@ -157,11 +158,55 @@ const Editor: React.FC = () => {
     }
   };
   if (!currentProject) {
+    // Check if we're still loading or if project doesn't exist
+    const projectExists = urlParam && projects.some(p => p.websiteUrl === urlParam || p.id === urlParam);
+    
+    if (urlParam && !projectExists && !isLoading) {
+      // Project doesn't exist, show create option
+      return (
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+          <div className="text-center max-w-md">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Layout className="w-8 h-8 text-red-600" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Project Not Found</h2>
+            <p className="text-gray-600 mb-6">
+              The project "{urlParam}" doesn't exist or you don't have access to it.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => navigate('/dashboard')}
+                className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+              >
+                Go to Dashboard
+              </button>
+                            <button
+                onClick={() => {
+                  // Create a new project with this URL
+                  const project = createProject(
+                    urlParam.charAt(0).toUpperCase() + urlParam.slice(1).replace(/-/g, ' '),
+                    undefined,
+                    urlParam
+                  );
+                  setCurrentProject(project);
+                }}
+                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Create Project
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-gray-600 text-lg">Loading your project...</p>
+          <p className="text-gray-600 text-lg">
+            {isLoading ? 'Loading your projects...' : 'Loading your project...'}
+          </p>
         </div>
       </div>
     );
