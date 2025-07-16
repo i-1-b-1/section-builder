@@ -27,7 +27,7 @@ const Preview: React.FC = () => {
 
   useEffect(() => {
     if (urlParam) {
-      const project = projects.find(p => p.websiteUrl === urlParam || p.id === urlParam);
+      const project = projects.find(p => p.websiteUrl === urlParam);
       if (project) {
         setCurrentProject(project);
       } else {
